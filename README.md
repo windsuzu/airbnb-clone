@@ -1,34 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Airbnb Clone
 
-## Getting Started
+This is an Airbnb clone project written in TypeScript. The structure and user interfaces are built with NEXT.js and TailwindCSS v3.
 
-First, run the development server:
+* [Airbnb Clone](#airbnb-clone)
+  * [Installation](#installation)
+  * [User Interfaces](#user-interfaces)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* install Next.js with Typescript
+  ```
+  npx create-next-app@latest --ts airbnb-clone
+  // or npx create-next-app@latest -e with-typescript airbnb-clone
+  ```
+* install tailwindcss
+  ```
+  https://tailwindcss.com/docs/guides/nextjs
+  ```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## User Interfaces
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+* [HomePage](pages/index.tsx)
+  * [Header](components/header.tsx)
+  * [Banner](components/banner.tsx)
+  * [Small Card (Explore Nearby)](components/small_card.tsx)
+  * [Medium Card (Live Anywhere)](components/medium_card.tsx)
+  * [Large Card](components/large_card.tsx)
+  * [Footer](components/footer.tsx)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Acknowledgement
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* [Sonny Sangha](https://www.youtube.com/channel/UCqeTj_QAnNlmt7FwzNwHZnA)
