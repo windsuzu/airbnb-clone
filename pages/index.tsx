@@ -24,7 +24,7 @@ const Home = ({ nearbyData, liveAnywhereData }: Props) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Header />
+            <Header transparent={true} placeholder={null} />
             <Banner />
             <main className="max-w-7xl mx-auto px-8 md:px-16">
                 <section className="pt-8">

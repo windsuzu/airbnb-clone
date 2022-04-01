@@ -4,26 +4,91 @@ import {
     GlobeAltIcon,
     MenuIcon,
     UserCircleIcon,
+    UsersIcon,
 } from "@heroicons/react/solid";
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-const Header = () => {
-    const [isTrans, setTrans] = useState(true);
-    const listenScrollEvent = () => {
-        setTrans(window.scrollY <= 70);
-    };
+type Props = {
+    transparent: boolean | null;
+    placeholder: string | null;
+};
+
+const Header = ({ transparent, placeholder }: Props) => {
+    const [isTrans, setTrans] = useState<boolean | null>(transparent);
+    const [searchInput, setSearchInput] = useState("");
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const [endDate, setEndDate] = useState<Date>(new Date());
+    const [guestNumber, setGuestNumber] = useState(1);
+    const router = useRouter();
+
+    const listenScrollEvent = useCallback(() => {
+        if (!searchInput.length && isTrans !== null) {
+            setTrans(window.scrollY === 0);
+        }
+    }, [searchInput, isTrans]);
+
     useEffect(() => {
         window.addEventListener("scroll", listenScrollEvent);
         return () => {
             window.removeEventListener("scroll", listenScrollEvent);
         };
-    }, []);
+    }, [listenScrollEvent]);
 
     const searchBarFocusHandler = () => {
-        setTrans(false);
+        if (isTrans) setTrans(false);
     };
-    const searchBarBlurHandler = () => {
-        setTrans(true);
+
+    const changeSearchInputHandler = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setSearchInput(e.target.value);
+    };
+
+    const dateSelection = {
+        startDate: startDate,
+        endDate: endDate,
+        key: "selection",
+    };
+
+    const dateRangeHandler = (ranges: RangeKeyDict) => {
+        const startDate = ranges.selection.startDate || new Date();
+        const endDate = ranges.selection.endDate || new Date();
+        setStartDate(startDate);
+        setEndDate(endDate);
+    };
+
+    const changeGuestNumberHandler = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setGuestNumber(+e.target.value);
+    };
+
+    const resetSearchHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setSearchInput("");
+        if (isTrans) setTrans(window.scrollY === 0);
+    };
+
+    const searchHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setSearchInput("");
+        if (isTrans) setTrans(window.scrollY === 0);
+
+        router.push({
+            pathname: "/search",
+            query: {
+                location: searchInput,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                guestNumber,
+            },
+        });
     };
 
     return (
@@ -33,19 +98,23 @@ const Header = () => {
             }`}
         >
             {/* Left */}
-            <div
-                className={`relative flex items-center ml-2 my-auto transition-all ease-out ${
-                    isTrans ? "h-12" : "h-10"
-                }`}
-            >
-                <Image
-                    src="/images/logo.png"
-                    alt="Airbnb Logo"
-                    layout="fill"
-                    objectFit="contain"
-                    objectPosition="left"
-                />
-            </div>
+            <Link href="/" passHref>
+                <div
+                    className={`relative flex items-center ml-2 my-auto transition-all ease-out ${
+                        isTrans ? "h-12" : "h-10"
+                    }`}
+                    style={{ maxWidth: "12rem" }}
+                >
+                    <Image
+                        src="/images/logo.png"
+                        alt="Airbnb Logo"
+                        layout="fill"
+                        objectFit="contain"
+                        objectPosition="center"
+                        className="cursor-pointer"
+                    />
+                </div>
+            </Link>
 
             {/* SearchBar */}
             <div className="flex md:mt-0 items-center justify-between border-2 rounded-full py-2 px-4 shadow-sm">
@@ -54,9 +123,10 @@ const Header = () => {
                         isTrans ? "placeholder-white" : "placeholder-gray-400"
                     }`}
                     type="text"
-                    placeholder="Start your journey"
+                    placeholder={placeholder || "Start your journey"}
                     onFocus={searchBarFocusHandler}
-                    onBlur={searchBarBlurHandler}
+                    value={searchInput}
+                    onChange={changeSearchInputHandler}
                 />
                 <SearchIcon className="h-8 bg-red-400 py-2 px-2.5 rounded-full cursor-pointer inline-flex text-white " />
             </div>
@@ -80,6 +150,53 @@ const Header = () => {
                     <UserCircleIcon className="h-6 w-6 cursor-pointer" />
                 </div>
             </div>
+
+            <AnimatePresence>
+                {searchInput && (
+                    <motion.div
+                        className="flex flex-col col-span-3 mx-auto mt-2"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                        <DateRangePicker
+                            ranges={[dateSelection]}
+                            onChange={dateRangeHandler}
+                            minDate={new Date()}
+                            rangeColors={["#FD5B61"]}
+                        />
+                        <div className="flex items-center mb-4 px-4 pb-2 border-b">
+                            <h2 className="flex-grow text-xl font-semibold">
+                                Number of Guests
+                            </h2>
+                            <UsersIcon className="h-5" />
+                            <input
+                                type="number"
+                                value={guestNumber}
+                                min={0}
+                                max={16}
+                                onChange={changeGuestNumberHandler}
+                                className="w-12 pl-2 ml-2 text-lg text-red-500 outline-none"
+                            />
+                        </div>
+                        <div className="flex mt-3">
+                            <button
+                                className="flex-grow text-gray-500"
+                                onClick={resetSearchHandler}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="flex-grow text-red-500"
+                                onClick={searchHandler}
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </header>
     );
 };
