@@ -71,7 +71,11 @@ const Header = () => {
                     Become a host
                 </p>
                 <GlobeAltIcon className="h-6 w-6 cursor-pointer" />
-                <div className="flex space-x-1 border-2 p-2 rounded-full border-red-300">
+                <div
+                    className={`flex space-x-1 border-2 p-2 rounded-full transition ease-out ${
+                        isTrans ? "border-gray-400" : "border-red-300"
+                    }`}
+                >
                     <MenuIcon className="h-6 w-6 cursor-pointer" />
                     <UserCircleIcon className="h-6 w-6 cursor-pointer" />
                 </div>
