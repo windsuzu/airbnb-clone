@@ -1,9 +1,16 @@
+import { GetServerSideProps } from "next";
 import Footer from "../../components/footer";
 import Header from "../../components/header";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
+import { SearchContent } from "../../interfaces";
+import InfoCard from "../../components/info_card";
 
-const SearchPage = () => {
+type Props = {
+    searchResults: SearchContent[];
+};
+
+const SearchPage = ({ searchResults }: Props) => {
     const router = useRouter();
     let { location, startDate, endDate, guestNumber } = router.query;
 
@@ -16,7 +23,7 @@ const SearchPage = () => {
         <>
             <Header transparent={null} placeholder={placeholder} />
             <main className="mt-36 md:mt-24 flex">
-                <section className="flex-grow pt-14 px-12">
+                <section className="flex-grow pt-14 px-4 md:px-12">
                     <p className="text-xs">
                         20+ Stays for {guestNumber} guests
                     </p>
@@ -32,6 +39,12 @@ const SearchPage = () => {
                         <p className="filter-button">Rooms and Beds</p>
                         <p className="filter-button">More Filters</p>
                     </div>
+
+                    <div className="flex flex-col">
+                        {searchResults.map((searchResult, idx) => (
+                            <InfoCard key={idx} searchInfo={searchResult} />
+                        ))}
+                    </div>
                 </section>
             </main>
             <Footer />
@@ -40,3 +53,11 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    const searchResults: SearchContent[] = await fetch(
+        "https://test-e9746-default-rtdb.firebaseio.com/airbnb/search.json"
+    ).then((res) => res.json());
+
+    return { props: { searchResults } };
+};

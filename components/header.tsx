@@ -6,7 +6,7 @@ import {
     UserCircleIcon,
     UsersIcon,
 } from "@heroicons/react/solid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
@@ -25,13 +25,17 @@ const Header = ({ transparent, placeholder }: Props) => {
     const [startDate, setStartDate] = useState<Date>(new Date());
     const [endDate, setEndDate] = useState<Date>(new Date());
     const [guestNumber, setGuestNumber] = useState(1);
+    const [isSearchFocus, setFocus] = useState(false);
     const router = useRouter();
 
     const listenScrollEvent = useCallback(() => {
+        if (isSearchFocus) {
+            return;
+        }
         if (!searchInput.length && isTrans !== null) {
             setTrans(window.scrollY === 0);
         }
-    }, [searchInput, isTrans]);
+    }, [searchInput, isTrans, isSearchFocus]);
 
     useEffect(() => {
         window.addEventListener("scroll", listenScrollEvent);
@@ -41,6 +45,7 @@ const Header = ({ transparent, placeholder }: Props) => {
     }, [listenScrollEvent]);
 
     const searchBarFocusHandler = () => {
+        setFocus(true);
         if (isTrans) setTrans(false);
     };
 
@@ -125,6 +130,7 @@ const Header = ({ transparent, placeholder }: Props) => {
                     type="text"
                     placeholder={placeholder || "Start your journey"}
                     onFocus={searchBarFocusHandler}
+                    onBlur={(e) => setFocus(false)}
                     value={searchInput}
                     onChange={changeSearchInputHandler}
                 />
@@ -174,7 +180,7 @@ const Header = ({ transparent, placeholder }: Props) => {
                             <input
                                 type="number"
                                 value={guestNumber}
-                                min={0}
+                                min={1}
                                 max={16}
                                 onChange={changeGuestNumberHandler}
                                 className="w-12 pl-2 ml-2 text-lg text-red-500 outline-none"
