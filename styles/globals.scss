@@ -11,3 +11,13 @@
 html {
     scroll-behavior: smooth;
 }
+
+.mapboxgl-popup-content {
+    @apply min-w-[250px] mb-6;
+    padding: 0 !important;
+    border-radius: 0.75rem !important;
+}
+
+.mapboxgl-popup-tip {
+    display: none;
+}
