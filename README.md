@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/demo.gif">
+  <a href="https://airbnb-clone-gamma-livid.vercel.app/" target="_blank"><img src="assets/demo.gif"></a>
 </p>
 
 An Airbnb clone project written in `TypeScript`. The structure and UI are built with `NEXT.js` / `TailwindCSS v3`. There are also animations using `framer-motion`, `bar-of-progress`, a practical search bar using `react-date-range`, and MapBox integration using `react-map-gl`.
