@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { SearchContent } from "../../interfaces";
 import InfoCard from "../../components/info_card";
 import Map from "../../components/map";
+import { motion } from "framer-motion";
 
 type Props = {
     searchResults: SearchContent[];
@@ -24,7 +25,13 @@ const SearchPage = ({ searchResults }: Props) => {
         <>
             <Header transparent={null} placeholder={placeholder} />
             <main className="mt-36 md:mt-24 flex">
-                <section className="flex-grow pt-14 px-4 md:px-6">
+                <motion.section
+                    className="flex-grow pt-14 px-4 md:px-6"
+                    initial={{ opacity: 0 }}
+                    viewport={{ once: true }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                >
                     <p className="text-xs">
                         20+ Stays for {guestNumber} guests
                     </p>
@@ -46,15 +53,20 @@ const SearchPage = ({ searchResults }: Props) => {
                             <InfoCard key={idx} searchInfo={searchResult} />
                         ))}
                     </div>
-                </section>
-                <section className="hidden lg:inline-flex min-w-[600px]">
+                </motion.section>
+                <motion.section
+                    className="hidden lg:inline-flex min-w-[600px]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                >
                     <Map
                         searchResults={searchResults}
                         startDate={startDate}
                         endDate={endDate}
                         guestNumber={guestNumber as string}
                     />
-                </section>
+                </motion.section>
             </main>
             <Footer />
         </>

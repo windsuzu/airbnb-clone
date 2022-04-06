@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { LargeCardContent } from "../interfaces";
+import { motion } from "framer-motion";
 
 type Props = {
     data: LargeCardContent;
@@ -8,7 +9,13 @@ type Props = {
 
 const LargeCard = ({ data }: Props) => {
     return (
-        <section className="relative py-16 overflow-auto">
+        <motion.section
+            className="relative py-16 overflow-auto"
+            initial={{ y: -10, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeIn" }}
+        >
             <div className="relative h-96">
                 <Image
                     src={data.image}
@@ -25,7 +32,7 @@ const LargeCard = ({ data }: Props) => {
                     {data.buttonText}
                 </button>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

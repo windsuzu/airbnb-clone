@@ -1,8 +1,14 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const Banner = () => {
     return (
-        <div className="relative h-[500px] sm:h-[600px] md:h-[700px] lg:h-[700px]">
+        <motion.div
+            className="relative h-[500px] sm:h-[600px] md:h-[700px] lg:h-[700px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeIn" }}
+        >
             <Image
                 src="/images/banner.jpg"
                 layout="fill"
@@ -18,7 +24,7 @@ const Banner = () => {
                     I am flexible
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

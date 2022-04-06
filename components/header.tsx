@@ -182,28 +182,26 @@ const Header = ({ transparent, placeholder }: Props) => {
                                 Number of Guests
                             </h2>
                             <div className="flex justify-center items-center">
-                                <MinusCircleIcon
-                                    className="h-6 w-6 text-red-300 cursor-pointer"
-                                    onClick={minusGuest}
-                                />
+                                <button onClick={minusGuest}>
+                                    <MinusCircleIcon className="h-6 w-6 text-red-300 cursor-pointer" />
+                                </button>
                                 <p className="w-12 text-center text-lg font-bold select-none">
                                     {guestNumber}
                                 </p>
-                                <PlusCircleIcon
-                                    className="h-6 w-6 text-red-300 cursor-pointer"
-                                    onClick={addGuest}
-                                />
+                                <button onClick={addGuest}>
+                                    <PlusCircleIcon className="h-6 w-6 text-red-300 cursor-pointer" />
+                                </button>
                             </div>
                         </div>
                         <div className="flex mt-3">
                             <button
-                                className="flex-grow text-gray-500"
+                                className="flex-grow text-gray-500 select-none"
                                 onClick={resetSearchHandler}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="flex-grow text-red-500"
+                                className="flex-grow text-red-500 select-none"
                                 onClick={searchHandler}
                             >
                                 Search

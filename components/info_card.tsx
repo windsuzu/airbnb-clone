@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SearchContent } from "../interfaces";
 import { HeartIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
+import { motion } from "framer-motion";
 
 type Props = {
     searchInfo: SearchContent;
@@ -9,7 +10,13 @@ type Props = {
 
 const InfoCard = ({ searchInfo }: Props) => {
     return (
-        <div className="flex flex-col md:flex-row py-7 px-2 border-b cursor-pointer first:border-t hover:opacity-80 hover:shadow-lg transition ease-out duration-200">
+        <motion.div
+            className="flex flex-col md:flex-row py-7 px-2 border-b cursor-pointer first:border-t hover:opacity-80 hover:shadow-lg transition ease-out duration-200"
+            initial={{ x: -10, opacity: 0 }}
+            viewport={{ once: true }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+        >
             <div className="relative h-32 md:h-52 mx-4 md:w-80 flex-shrink-0 m-2 md:m-0">
                 <Image
                     src={searchInfo.img}
@@ -45,7 +52,7 @@ const InfoCard = ({ searchInfo }: Props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
