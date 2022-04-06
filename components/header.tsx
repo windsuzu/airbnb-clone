@@ -8,7 +8,7 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import { DateRange, DateRangePicker, RangeKeyDict } from "react-date-range";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -163,20 +163,30 @@ const Header = ({ transparent, placeholder }: Props) => {
             <AnimatePresence>
                 {searchInput && (
                     <motion.div
-                        className="flex flex-col col-span-3 mx-auto mt-2"
+                        className="flex flex-col col-span-1 md:col-span-3 mx-auto mt-2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
                     >
-                        <DateRangePicker
-                            ranges={[dateSelection]}
-                            onChange={dateRangeHandler}
-                            minDate={new Date()}
-                            rangeColors={["#FD5B61"]}
-                            inputRanges={inputRange}
-                            staticRanges={staticRange}
-                        />
+                        <div className="md:hidden">
+                            <DateRange
+                                ranges={[dateSelection]}
+                                onChange={dateRangeHandler}
+                                minDate={new Date()}
+                                rangeColors={["#FD5B61"]}
+                            />
+                        </div>
+                        <div className="hidden md:inline-block">
+                            <DateRangePicker
+                                ranges={[dateSelection]}
+                                onChange={dateRangeHandler}
+                                minDate={new Date()}
+                                rangeColors={["#FD5B61"]}
+                                inputRanges={inputRange}
+                                staticRanges={staticRange}
+                            />
+                        </div>
                         <div className="flex items-center mb-4 px-4 pb-2 border-b">
                             <h2 className="flex-grow text-xl font-semibold">
                                 Number of Guests
