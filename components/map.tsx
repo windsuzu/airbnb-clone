@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { StarIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Location {
     latitude: number;
@@ -28,8 +29,8 @@ const Map = ({ searchResults, startDate, endDate, guestNumber }: Props) => {
     const [selected, setSelected] = useState<SearchContent | null>(null);
     const center = getCenter(locations) as Location;
 
-    const handleClick = (result: SearchContent) => {
-        setSelected(null);
+    const handleClick = (event: React.MouseEvent, result: SearchContent) => {
+        event.stopPropagation();
         setSelected(result);
     };
 
@@ -47,7 +48,7 @@ const Map = ({ searchResults, startDate, endDate, guestNumber }: Props) => {
                 >
                     <p
                         className="bg-white border shadow-md px-2 py-1 text-sm rounded-full text-gray-800 font-semibold cursor-default"
-                        onClick={handleClick.bind(null, result)}
+                        onClick={(e) => handleClick(e, result)}
                     >
                         {result.price}
                     </p>
@@ -55,7 +56,7 @@ const Map = ({ searchResults, startDate, endDate, guestNumber }: Props) => {
             )),
         [searchResults]
     );
-    console.log(markers);
+
     return (
         <MapGL
             mapStyle="mapbox://styles/windsuzu/cl1kkypec001j14ljxyo50goa"
@@ -67,16 +68,17 @@ const Map = ({ searchResults, startDate, endDate, guestNumber }: Props) => {
                 longitude: center.longitude,
             }}
             attributionControl={false}
+            onClick={handleClose}
         >
             {markers}
             {selected && (
                 <Popup
                     latitude={Number(selected.lat)}
                     longitude={selected.long}
-                    closeOnClick={false}
-                    onClose={handleClose}
                     closeButton={false}
+                    closeOnClick={false}
                     className="cursor-pointer"
+                    onClose={handleClose}
                 >
                     <div className="relative h-32 w-full rounded-t-xl overflow-hidden z-10">
                         <Image

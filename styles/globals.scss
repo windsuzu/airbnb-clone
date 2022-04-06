@@ -16,8 +16,18 @@ html {
     @apply min-w-[250px] mb-6;
     padding: 0 !important;
     border-radius: 0.75rem !important;
+    animation: fade-in 0.5s ease-out !important;
 }
 
 .mapboxgl-popup-tip {
     display: none;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

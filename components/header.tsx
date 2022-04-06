@@ -4,7 +4,6 @@ import {
     GlobeAltIcon,
     MenuIcon,
     UserCircleIcon,
-    UsersIcon,
 } from "@heroicons/react/solid";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
@@ -13,6 +12,8 @@ import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { staticRange, inputRange } from "../model/date_range";
+import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/outline";
 
 type Props = {
     transparent: boolean | null;
@@ -68,10 +69,12 @@ const Header = ({ transparent, placeholder }: Props) => {
         setEndDate(endDate);
     };
 
-    const changeGuestNumberHandler = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setGuestNumber(+e.target.value);
+    const minusGuest = () => {
+        setGuestNumber((prev) => (prev > 1 ? prev - 1 : prev));
+    };
+
+    const addGuest = () => {
+        setGuestNumber((prev) => (prev < 16 ? prev + 1 : prev));
     };
 
     const resetSearchHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,20 +174,26 @@ const Header = ({ transparent, placeholder }: Props) => {
                             onChange={dateRangeHandler}
                             minDate={new Date()}
                             rangeColors={["#FD5B61"]}
+                            inputRanges={inputRange}
+                            staticRanges={staticRange}
                         />
                         <div className="flex items-center mb-4 px-4 pb-2 border-b">
                             <h2 className="flex-grow text-xl font-semibold">
                                 Number of Guests
                             </h2>
-                            <UsersIcon className="h-5" />
-                            <input
-                                type="number"
-                                value={guestNumber}
-                                min={1}
-                                max={16}
-                                onChange={changeGuestNumberHandler}
-                                className="w-12 pl-2 ml-2 text-lg text-red-500 outline-none"
-                            />
+                            <div className="flex justify-center items-center">
+                                <MinusCircleIcon
+                                    className="h-6 w-6 text-red-300 cursor-pointer"
+                                    onClick={minusGuest}
+                                />
+                                <p className="w-12 text-center text-lg font-bold select-none">
+                                    {guestNumber}
+                                </p>
+                                <PlusCircleIcon
+                                    className="h-6 w-6 text-red-300 cursor-pointer"
+                                    onClick={addGuest}
+                                />
+                            </div>
                         </div>
                         <div className="flex mt-3">
                             <button
